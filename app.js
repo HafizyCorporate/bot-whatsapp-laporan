@@ -6,6 +6,18 @@ require('./report');
 
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 
+// Di sinilah 'client' didefinisikan dengan settingan Puppeteer yang bersih
+const client = new Client({
+    authStrategy: new LocalAuth(),
+    puppeteer: { 
+        args: [
+            '--no-sandbox', 
+            '--disable-setuid-sandbox', 
+            '--disable-dev-shm-usage',
+            '--disable-gpu'
+        ] 
+    }
+});
 
 client.on('qr', qr => {
     qrcode.generate(qr, { small: true });
@@ -13,14 +25,14 @@ client.on('qr', qr => {
 });
 
 client.on('ready', () => {
-    console.log("✅ Server Kasir AI Multi-Tenant Aktif!");
+    console.log("✅ Server Kasir AI Multi-Tenant Aktif dan Siap Menerima Pesanan!");
 });
 
 client.on('message', async msg => {
     try {
-        // 1. GATEKEEPER: Cek DB, apakah ini klien yang bayar langganan?
+        // 1. Cek DB, apakah ini klien yang aktif?
         const dataKlien = await db.cekKlienAktif(msg.from);
-        if (!dataKlien) return; // Abaikan pesan dari orang iseng/belum bayar
+        if (!dataKlien) return; 
 
         // 2. Proses AI
         const model = genAI.getGenerativeModel({ model: "gemini-pro" });
@@ -48,4 +60,5 @@ client.on('message', async msg => {
     }
 });
 
+// Baris ini yang menjalankan semuanya
 client.initialize();
