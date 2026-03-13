@@ -6,11 +6,10 @@ require('./report');
 
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 
-
 const client = new Client({
     authStrategy: new LocalAuth(),
     puppeteer: { 
-        executablePath: '/usr/bin/google-chrome', // Ngasih tau bot lokasi Chrome di Railway
+        executablePath: 'chromium', // <-- Cukup ketik ini aja
         args: [
             '--no-sandbox', 
             '--disable-setuid-sandbox', 
