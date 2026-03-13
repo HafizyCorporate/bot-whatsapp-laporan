@@ -2,24 +2,9 @@ const { Client, LocalAuth } = require('whatsapp-web.js');
 const qrcode = require('qrcode-terminal');
 const { GoogleGenerativeAI } = require("@google/generative-ai");
 const db = require('./db');
-const { execSync } = require('child_process');
 require('./report'); 
 
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
-
-const client = new Client({
-    authStrategy: new LocalAuth(),
-    puppeteer: { 
-        // Ini triknya: Suruh sistem nyari sendiri alamat aslinya
-        executablePath: execSync('which chromium').toString().trim(),
-        args: [
-            '--no-sandbox', 
-            '--disable-setuid-sandbox', 
-            '--disable-dev-shm-usage',
-            '--disable-gpu'
-        ] 
-    }
-});
 
 
 client.on('qr', qr => {
