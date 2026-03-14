@@ -25,7 +25,7 @@ client.on('qr', async (qr) => {
     try {
         // GANTI "6281234567890" DI BAWAH INI DENGAN NOMOR WA BOT KAMU 
         // (Wajib pakai awalan 62, tanpa tanda +, tanpa spasi, tanpa strip)
-        const nomorBot = "628984287548; 
+        const nomorBot = "628984287548";
         const pairingCode = await client.requestPairingCode(nomorBot); 
         
         console.log(`\n========================================`);
