@@ -20,10 +20,27 @@ const client = new Client({
 });
 
 
-client.on('qr', qr => {
-    qrcode.generate(qr, { small: true });
-    console.log("👆 SCAN QR CODE INI PAKAI NOMOR WA BOT PUSAT KAMU 👆");
+client.on('qr', async (qr) => {
+    console.log("Sedang meminta kode pairing 8 angka ke WhatsApp...");
+    try {
+        // GANTI "6281234567890" DI BAWAH INI DENGAN NOMOR WA BOT KAMU 
+        // (Wajib pakai awalan 62, tanpa tanda +, tanpa spasi, tanpa strip)
+        const nomorBot = "628984287548; 
+        const pairingCode = await client.requestPairingCode(nomorBot); 
+        
+        console.log(`\n========================================`);
+        console.log(`KODE PAIRING KAMU: ${pairingCode}`);
+        console.log(`========================================\n`);
+        console.log("CARA MASUKIN KODENYA:");
+        console.log("1. Buka WA di HP kamu");
+        console.log("2. Pilih 'Tautkan Perangkat' (Linked Devices)");
+        console.log("3. Pilih 'Tautkan dengan Nomor Telepon' (di bagian bawah)");
+        console.log("4. Masukkan kode 8 angka di atas!");
+    } catch (err) {
+        console.error("Gagal meminta kode pairing. Pastikan nomor sudah benar.", err);
+    }
 });
+
 
 client.on('ready', () => {
     console.log("✅ Server Kasir AI Multi-Tenant Aktif dan Siap Menerima Pesanan!");
