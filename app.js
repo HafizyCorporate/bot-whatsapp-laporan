@@ -6,10 +6,10 @@ require('./report');
 
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 
-// Di sinilah 'client' didefinisikan dengan settingan Puppeteer yang bersih
 const client = new Client({
     authStrategy: new LocalAuth(),
     puppeteer: { 
+        executablePath: process.env.PUPPETEER_EXECUTABLE_PATH, // <-- Baca dari Docker
         args: [
             '--no-sandbox', 
             '--disable-setuid-sandbox', 
@@ -18,6 +18,7 @@ const client = new Client({
         ] 
     }
 });
+
 
 client.on('qr', qr => {
     qrcode.generate(qr, { small: true });
